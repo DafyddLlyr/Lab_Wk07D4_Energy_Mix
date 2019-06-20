@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Energy Mix</h1>
-    <energy-chart />
+    <energy-chart :energyData='generationMixChartData'/>
   </div>
 </template>
 
@@ -13,7 +13,6 @@ export default {
   data() {
     return {
       generationMix: null,
-      generationMixChartData: null
     }
   },
   components: {
@@ -22,22 +21,24 @@ export default {
   mounted() {
     this.fetchEnergyData()
   },
+  computed:{
+    generationMixChartData: function() {
+      if (this.generationMix) {
+        const result = this.generationMix
+        .map(type => [type.fuel, type.perc])
+        .sort((a, b) => -(a[1] - b[1]))
+        result.unshift(['Fuel', 'Percentage']);
+        return result;
+      }
+    }
+  },
   methods: {
     fetchEnergyData: function() {
       fetch('https://api.carbonintensity.org.uk/generation')
       .then(response => response.json())
-      .then(apiResult => {
-        const generationMix = apiResult.data.generationmix;
-        this.generationMix = generationMix
-        this.generationMixChartData =
-          generationMix.map(type => [type.fuel, type.perc]);
-        this.generationMixChartData.unshift(['Fuel', 'Percentage']);
-      }
-    )
-
-
+      .then(apiResult => this.generationMix = apiResult.data.generationmix);
+    }
   }
-}
 }
 </script>
 
