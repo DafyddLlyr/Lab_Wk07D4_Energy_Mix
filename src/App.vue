@@ -3,10 +3,7 @@
     <h1>UK Energy Mix</h1>
     <div id="charts">
       <energy-chart chartTitle="Past 30 minutes"/>
-      <energy-chart chartTitle="Custom Timeframe"
-        :from='"/" + timeNow + "/"'
-        to="pt24h"
-        class="custom" />
+      <custom-chart chartTitle="Custom Timeframe" class="custom"/>
       <energy-chart chartTitle="Past 24 hours"
         :from='"/" + timeNow + "/"'
         to="pt24h" />
@@ -16,6 +13,7 @@
 
 <script>
 import EnergyChart from '@/components/EnergyChart.vue'
+import CustomEnergyChart from '@/components/CustomEnergyChart.vue'
 
 export default {
   name: 'app',
@@ -25,7 +23,8 @@ export default {
     }
   },
   components: {
-    'energy-chart': EnergyChart
+    'energy-chart': EnergyChart,
+    'custom-chart': CustomEnergyChart
   }
 }
 </script>
@@ -37,7 +36,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 10px;
+  height: 100vh;
 }
 
 #charts {

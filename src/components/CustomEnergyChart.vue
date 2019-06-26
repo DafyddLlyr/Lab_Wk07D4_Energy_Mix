@@ -1,6 +1,17 @@
 <template lang="html">
   <div class='container'>
     <h2>{{ chartTitle }}</h2>
+    <div class="date-input">
+      <div class="input-wrapper">
+        <label for="from">From: </label>
+        <input type="date" name="from" v-model="from" @change="updateEnergyData">
+      </div>
+      <div class="input-wrapper">
+        <label for="to">To: </label>
+        <input type="date" date="to" v-model="to"
+        @change="updateEnergyData">
+      </div>
+    </div>
     <GChart class="chart" type="PieChart" :data="chartEnergyData" :options="chartOptions" />
   </div>
 
@@ -8,11 +19,13 @@
 
 <script>
 export default {
-  name: 'energy-chart',
-  props: ['chartTitle', 'from', 'to', 'custom'],
+  name: 'custom-chart',
+  props: ['chartTitle'],
   data() {
     return {
       title: null,
+      to: 'pt24h',
+      from: '/2019-06-26T20:28:20.985Z/',
       chartOptions: {
         legend: {
           alignment: 'center',
@@ -45,27 +58,28 @@ export default {
   },
   methods: {
     fetchEnergyData(from = "", to= "") {
+      let append = from + to
+      if (to != 'pt24h') { append = `/${this.from}T00:00:00.001Z/${this.to}T23:59:59.000Z`}
       const url = 'https://api.carbonintensity.org.uk/generation'
-      console.log(url + from + to);
-      fetch(url + from + to)
+      console.log(url, append);
+      fetch(url + append)
       .then(response => response.json())
       .then(apiResult => {
-        if (!apiResult.data.length) {
-          this.energyData = apiResult.data.generationmix
-        } else {
-          let apiData = {}
-          apiData = apiResult.data.map(halfHour => halfHour.generationmix)
-          this.energyData.forEach(fuelType => {
-            apiData.forEach(halfHour => {
-              halfHour.forEach(fuel => {
-                if (fuel['fuel'] === fuelType['fuel']) {
-                  fuelType['perc'] += fuel['perc'];
-                }
-              })
+        let apiData = {}
+        apiData = apiResult.data.map(halfHour => halfHour.generationmix)
+        this.energyData.forEach(fuelType => {
+          apiData.forEach(halfHour => {
+            halfHour.forEach(fuel => {
+              if (fuel['fuel'] === fuelType['fuel']) {
+                fuelType['perc'] += fuel['perc'];
+              }
             })
           })
-        }
-      })
+        })
+      }
+    )},
+    updateEnergyData() {
+      this.fetchEnergyData(this.from, this.to)
     }
   },
   computed:{
@@ -84,35 +98,35 @@ export default {
 
 <style lang="css" scoped>
 
-h2 {
-  margin: 0;
-  padding: 0;
-}
+  h2 {
+    margin: 0;
+    padding: 0;
+  }
 
-.chart {
-  width: 100%;
-  height: 100%;
-}
+  .chart {
+    width: 100%;
+    height: 100%;
+  }
 
-.container {
-  margin: 2vw;
-}
+  .container {
+    margin: 2vw;
+  }
 
-.date-input {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin-top: 2vw;
-}
+  .date-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 2vw;
+  }
 
-.input-wrapper {
-  margin: 0 2vw;
-}
+  .input-wrapper {
+    margin: 0 2vw;
+  }
 
-input {
-  font-size: inherit;
-  font-family: inherit;
-}
+  input {
+    font-size: inherit;
+    font-family: inherit;
+  }
 
 </style>
