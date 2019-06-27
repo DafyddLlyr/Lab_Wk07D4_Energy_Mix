@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>UK Energy Mix</h1>
-    <h4>A breakdown of the UK's current energy mix, tying togther National Grid's <a href="https://carbonintensity.org.uk/">Carbon Intensity API</a> and <a href="https://developers.google.com/chart/">Google Charts</a></h4>
+    <h4>A breakdown of the UK's current energy mix, tying together National Grid's <a href="https://carbonintensity.org.uk/">Carbon Intensity API</a> and <a href="https://developers.google.com/chart/">Google Charts</a></h4>
     <div id="charts">
       <energy-chart chartTitle="Past 30 minutes"/>
       <custom-chart chartTitle="Custom Timeframe" class="custom"/>
