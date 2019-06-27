@@ -37,7 +37,7 @@ export default {
         chartArea: {
           width: '90%',
           height: '90%',
-          left: '10%',
+          left: '20%',
         }
       },
       energyData: [
@@ -61,7 +61,6 @@ export default {
       let append = from + to
       if (to != 'pt24h') { append = `/${this.from}T00:00:00.001Z/${this.to}T23:59:59.000Z`}
       const url = 'https://api.carbonintensity.org.uk/generation'
-      console.log(url, append);
       fetch(url + append)
       .then(response => response.json())
       .then(apiResult => {

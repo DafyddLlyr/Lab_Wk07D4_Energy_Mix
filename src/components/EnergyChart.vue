@@ -46,7 +46,6 @@ export default {
   methods: {
     fetchEnergyData(from = "", to= "") {
       const url = 'https://api.carbonintensity.org.uk/generation'
-      console.log(url + from + to);
       fetch(url + from + to)
       .then(response => response.json())
       .then(apiResult => {

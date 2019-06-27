@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <h1>UK Energy Mix</h1>
+    <h4>A breakdown of the UK's current energy mix, tying togther National Grid's <a href="https://carbonintensity.org.uk/">Carbon Intensity API</a> and <a href="https://developers.google.com/chart/">Google Charts</a></h4>
     <div id="charts">
       <energy-chart chartTitle="Past 30 minutes"/>
       <custom-chart chartTitle="Custom Timeframe" class="custom"/>
@@ -30,13 +31,19 @@ export default {
 </script>
 
 <style>
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height: 100vh;
+  height: 90vh;
 }
 
 #charts {
@@ -54,6 +61,22 @@ export default {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+h1 {
+  margin: 1vw;
+}
+
+h4 {
+  margin-top: 0;
+}
+
+a {
+  color: #3366CC;
+}
+
+a:hover {
+  color: #FF9900;
 }
 
 </style>
